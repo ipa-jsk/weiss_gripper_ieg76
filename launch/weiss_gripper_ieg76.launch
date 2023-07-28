@@ -1,7 +1,13 @@
 <?xml version="1.0"?>
 <launch>
+<arg name="sim" default="False" />
     <!-- start driver -->
-    <node pkg="weiss_gripper_ieg76" type="driver.py" name="weiss_gripper_ieg76_driver" output="screen">
+    <node unless="$(arg sim)" pkg="weiss_gripper_ieg76" type="driver.py" name="weiss_gripper_ieg76_driver" output="screen">
         <param name="serial_port_address" value="/dev/ttyACM0"/>
+    </node>
+    <node if="$(arg sim)" pkg="weiss_gripper_ieg76" type="simulator.py" name="weiss_gripper_ieg76_driver_sim" output="screen">
+        <!-- supported: CRG 200-085, CRG 30-050, IEG 76-030, IEG 55-020 --> 
+        <param name="product_id" value="IEG 76-030"/>
+        <param name="velocity" value="100"/> <!-- mm/s -->
     </node>
 </launch>
